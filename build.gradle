@@ -4,10 +4,21 @@ plugins {
 }
 
 group 'org.example'
-version '1.0-SNAPSHOT'
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
+}
+
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'MainApp'
+    }
+    baseName = 'sampleapp'
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+    duplicatesStrategy 'exclude'
 }
 
 dependencies {
